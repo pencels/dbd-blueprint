@@ -1,0 +1,21 @@
+---
+import Base from "@layouts/Base.astro";
+
+const response = await fetch("http://localhost:8080/v1/packs");
+const data = await response.json();
+---
+
+<Base title="Packs">
+  <h2 class="text-3xl">Available Packs</h2>
+  <ul class="mt-2">
+    {
+      data.map((pack: any) => (
+        <li>
+          <a href={`/packs/${pack.id}`}>
+            {pack.name} - {pack.description}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
