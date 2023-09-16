@@ -1,0 +1,29 @@
+---
+import Editor from "@components/Editor";
+import Base from "@layouts/Base.astro";
+
+const initText = `{
+    "canvas_size": [256, 256],
+    "aliases": {
+        "fg": ["pack:pack-id-here"]
+    },
+    "layers": [
+        {
+            "ref": "fg",
+            "blend_mode": "Normal",
+            "opacity": 1.0,
+            "transform": {
+                "offset": [0, 0],
+                "scale": 1.0,
+                "degrees": 0.0
+            }
+        }
+    ]
+}`;
+---
+
+<Base title="compositor">
+  <h1 class="text-3xl mb-2">compositor</h1>
+  <p class="mb-3">if you know what needs to go here, then go for it :)</p>
+  <Editor client:only="preact" initValue={initText} />
+</Base>
