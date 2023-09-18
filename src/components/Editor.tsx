@@ -1,13 +1,12 @@
-import { createRef } from "preact";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 
 import "@lib/userWorker";
 import { initVimMode, type VimMode } from "monaco-vim";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
 export default function Editor({ initValue = "" }) {
-  const monacoEditor = createRef<HTMLDivElement>();
-  const vimStatusBar = createRef<HTMLDivElement>();
+  const monacoEditor = useRef<HTMLDivElement>(null);
+  const vimStatusBar = useRef<HTMLDivElement>(null);
 
   const [vimMode, setVimMode] = useState<VimMode | undefined>(undefined);
   const [editor, setEditor] = useState<
@@ -15,26 +14,46 @@ export default function Editor({ initValue = "" }) {
   >(undefined);
 
   useEffect(() => {
-    const editor = monaco.editor.create(monacoEditor.current!, {
-      value: initValue,
-      language: "json",
-      theme: "vs-dark",
-      minimap: {
-        enabled: false,
-      },
-      automaticLayout: true,
-      fontFamily: "IBM Plex Mono",
-      contextmenu: false,
-    });
-    setEditor(editor);
-
-    setVimMode(initVimMode(editor, vimStatusBar.current!));
+    if (monacoEditor.current) {
+      setEditor((editor) => {
+        if (editor) return editor;
+        return monaco.editor.create(monacoEditor.current!, {
+          value: initValue,
+          language: "json",
+          theme: "vs-dark",
+          minimap: {
+            enabled: false,
+          },
+          automaticLayout: true,
+          fontFamily: "IBM Plex Mono",
+          contextmenu: false,
+        });
+      });
+    }
 
     return () => {
-      vimMode?.dispose();
-      editor.dispose();
+      editor?.dispose();
     };
   }, [monacoEditor.current]);
+
+  // Remeasure custom sized fonts that load in with through <link>s
+  useEffect(() => {
+    document.fonts.ready.then(() => {
+      monaco.editor.remeasureFonts();
+    });
+  }, []);
+
+  useEffect(() => {
+    if (editor && vimStatusBar.current) {
+      setVimMode((vimMode) => {
+        if (vimMode) return vimMode;
+        return initVimMode(editor, vimStatusBar.current!);
+      });
+    }
+    return () => {
+      vimMode?.dispose();
+    };
+  }, [editor, vimStatusBar.current]);
 
   return (
     <div>
@@ -45,7 +64,7 @@ export default function Editor({ initValue = "" }) {
         name="vim-mode"
         type="checkbox"
         checked={vimMode !== undefined}
-        onInput={(e) => {
+        onInput={() => {
           if (vimMode) {
             vimMode.dispose();
             setVimMode(undefined);
@@ -54,7 +73,7 @@ export default function Editor({ initValue = "" }) {
           }
         }}
       />
-      <div ref={monacoEditor} className={`min-h-[500px]`}></div>
+      <div ref={monacoEditor} className="min-h-[600px]"></div>
       <div ref={vimStatusBar} className="font-mono"></div>
     </div>
   );

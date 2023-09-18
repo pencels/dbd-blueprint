@@ -5,24 +5,20 @@ import Base from "@layouts/Base.astro";
 const initText = `{
     "canvas_size": [256, 256],
     "aliases": {
-        "fg": ["pack:pack-id-here"]
+        "$perks": ["default-icons:Perks/**", "fancy-icons:Perks/DLC5/**"]
     },
     "layers": [
         {
-            "ref": "fg",
-            "blend_mode": "Normal",
-            "opacity": 1.0,
-            "transform": {
-                "offset": [0, 0],
-                "scale": 1.0,
-                "degrees": 0.0
-            }
+            "use": "just-black-bg:perk.png"
+        },
+        {
+            "use": "$perks"
         }
     ]
 }`;
 ---
 
-<Base title="compositor">
+<Base title="Compositor">
   <h1 class="text-3xl mb-2">compositor</h1>
   <p class="mb-3">if you know what needs to go here, then go for it :)</p>
   <Editor client:only="preact" initValue={initText} />

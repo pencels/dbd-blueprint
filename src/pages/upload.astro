@@ -1,54 +1,9 @@
 ---
+import UploadForm from "@components/UploadForm";
 import Base from "@layouts/Base.astro";
 ---
 
 <Base title="Upload">
-  <form id="form">
-    <input
-      type="text"
-      name="pack_id"
-      value="d084c6e8-06e7-4a1a-8494-9803f8912e0e"
-    />
-    <!-- @ts-expect-error -->
-    <input type="file" name="file" id="filepicker" webkitdirectory />
-    <button class="p-2 bg-slate-200 rounded">Submit</button>
-  </form>
+  <h1 class="text-3xl mb-2">Upload a new asset pack</h1>
+  <UploadForm client:load />
 </Base>
-<script>
-  import Queue from "../lib/queue.ts";
-  import axios from "axios";
-  let files: File[] = [];
-  document.querySelector("#filepicker")!.addEventListener("change", (e) => {
-    files = (e.target as any).files as File[];
-  });
-  function chunked<T>(arr: T[], chunkSize: number): T[][] {
-    const result = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      result.push(arr.slice(i, i + chunkSize));
-    }
-    return result;
-  }
-  document.querySelector("#form")!.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log(files);
-
-    const queue = new Queue<Promise<any>>(10);
-
-    (async () => {
-      while (true) {
-        await queue.poll();
-      }
-    })();
-
-    (async () => {
-      for (const file of files) {
-        const data = new FormData();
-        data.append("pack_id", "df036bd4-787a-4887-bbe9-728117466bd6");
-        data.append("file", file);
-        const promise = axios.post("http://localhost:8080/v1/assets", data, {});
-        await queue.push(promise);
-      }
-    })();
-  });
-</script>

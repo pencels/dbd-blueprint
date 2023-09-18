@@ -23,6 +23,9 @@ dependencies:
   axios:
     specifier: ^1.5.0
     version: 1.5.0
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   monaco-editor:
     specifier: ^0.43.0
     version: 0.43.0
@@ -32,9 +35,20 @@ dependencies:
   preact:
     specifier: ^10.6.5
     version: 10.17.1
+  slug:
+    specifier: ^8.2.3
+    version: 8.2.3
   tailwindcss:
     specifier: ^3.0.24
     version: 3.3.3
+
+devDependencies:
+  '@types/lodash':
+    specifier: ^4.14.198
+    version: 4.14.198
+  '@types/slug':
+    specifier: ^5.0.4
+    version: 5.0.4
 
 packages:
 
@@ -1030,6 +1044,10 @@ packages:
     resolution: {integrity: sha512-sqm9g7mHlPY/43fcSNrCYfOeX9zkTTK+euO5E6+CVijSMm5tTjkVdwdqRkY3ljjIAf8679vps5jKUoJBCLsMDA==}
     dev: false
 
+  /@types/lodash@4.14.198:
+    resolution: {integrity: sha512-trNJ/vtMZYMLhfN45uLq4ShQSw0/S7xCTLLVM+WM1rmFpba/VS42jVUgaO3w/NOLiWR/09lnYk0yMaA/atdIsg==}
+    dev: true
+
   /@types/mdast@3.0.12:
     resolution: {integrity: sha512-DT+iNIRNX884cx0/Q1ja7NyUPpZuv0KPyL5rGNxm1WC1OtHstl7n4Jb7nk+xacNShQMbczJjt8uFzznpp6kYBg==}
     dependencies:
@@ -1053,6 +1071,10 @@ packages:
   /@types/resolve@1.20.2:
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
     dev: false
+
+  /@types/slug@5.0.4:
+    resolution: {integrity: sha512-6zl8VXHEDtDsfdSlRsLW3uatVpwPJ17MKIzOy3m2lObF1dtA/dHl71pKvqiJJL1YKhdsB4gJ4WXENSLQ9TjcPQ==}
+    dev: true
 
   /@types/unist@2.0.8:
     resolution: {integrity: sha512-d0XxK3YTObnWVp6rZuev3c49+j4Lo8g4L1ZRm9z5L0xpoZycUPshHgczK5gsUMaZOstjVYYi09p5gYvUtfChYw==}
@@ -2382,6 +2404,10 @@ packages:
       p-locate: 5.0.0
     dev: false
 
+  /lodash@4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
+
   /log-symbols@5.1.0:
     resolution: {integrity: sha512-l0x2DvrW294C9uDCoQe1VSU4gf529FkSZ6leBl4TiqZH/e+0R7hSfHQBNut2mNygDgHwvYHfFLn6Oxb3VWj2rA==}
     engines: {node: '>=12'}
@@ -3614,6 +3640,11 @@ packages:
 
   /sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
+    dev: false
+
+  /slug@8.2.3:
+    resolution: {integrity: sha512-fXjhAZszNecz855GUNIwW0+sFPi9WV4bMiEKDOCA4wcq1ts1UnUVNy/F78B0Aat7/W3rA+se//33ILKNMrbeYQ==}
+    hasBin: true
     dev: false
 
   /source-map-js@1.0.2:
