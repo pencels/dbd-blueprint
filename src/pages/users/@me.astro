@@ -1,0 +1,19 @@
+---
+import Base from "@layouts/Base.astro";
+
+import { getSession } from "auth-astro/server";
+import SignOut from "auth-astro/src/components/SignOut.astro";
+const session = await getSession(Astro.request);
+
+if (!session) {
+  return Astro.redirect("/login");
+}
+---
+
+<Base title="@me">
+  <h1>{session.user?.name}</h1>
+  <img src={session.user?.image} />
+  <div>
+    <SignOut>Log Out</SignOut>
+  </div>
+</Base>
