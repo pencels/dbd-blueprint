@@ -2,25 +2,28 @@ import { useEffect, useRef, useState } from "preact/hooks";
 
 import "@lib/userWorker";
 import { initVimMode, type VimMode } from "monaco-vim";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import { editor as monacoEditor } from "monaco-editor/esm/vs/editor/editor.api";
+import { useStore } from "@nanostores/preact";
+import { currentTheme } from "src/themeStore";
 
 export default function Editor({ initValue = "" }) {
-  const monacoEditor = useRef<HTMLDivElement>(null);
+  const monacoEditorElem = useRef<HTMLDivElement>(null);
   const vimStatusBar = useRef<HTMLDivElement>(null);
 
+  const $currentTheme = useStore(currentTheme);
   const [vimMode, setVimMode] = useState<VimMode | undefined>(undefined);
   const [editor, setEditor] = useState<
-    monaco.editor.IStandaloneCodeEditor | undefined
+    monacoEditor.IStandaloneCodeEditor | undefined
   >(undefined);
 
   useEffect(() => {
-    if (monacoEditor.current) {
+    if (monacoEditorElem.current) {
       setEditor((editor) => {
         if (editor) return editor;
-        return monaco.editor.create(monacoEditor.current!, {
+        return monacoEditor.create(monacoEditorElem.current!, {
           value: initValue,
           language: "json",
-          theme: "vs-dark",
+          theme: $currentTheme === 'dark' ? "vs-dark" : "vs-light",
           minimap: {
             enabled: false,
           },
@@ -34,14 +37,18 @@ export default function Editor({ initValue = "" }) {
     return () => {
       editor?.dispose();
     };
-  }, [monacoEditor.current]);
+  }, [monacoEditorElem.current]);
 
-  // Remeasure custom sized fonts that load in with through <link>s
   useEffect(() => {
+    // Remeasure custom sized fonts that load in with through <link>s
     document.fonts.ready.then(() => {
-      monaco.editor.remeasureFonts();
+      monacoEditor.remeasureFonts();
     });
   }, []);
+
+  useEffect(() => {
+    monacoEditor.setTheme($currentTheme === 'dark' ? 'vs-dark' : 'vs-light');
+  }, [$currentTheme]);
 
   useEffect(() => {
     if (editor && vimStatusBar.current) {
@@ -73,8 +80,8 @@ export default function Editor({ initValue = "" }) {
           }
         }}
       />
-      <div ref={monacoEditor} className="min-h-[600px]"></div>
-      <div ref={vimStatusBar} className="font-mono"></div>
+      <div ref={monacoEditorElem} class="min-h-[600px]"></div>
+      <div ref={vimStatusBar} class="font-mono"></div>
     </div>
   );
 }

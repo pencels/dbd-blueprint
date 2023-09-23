@@ -29,6 +29,9 @@ dependencies:
   '@azure/keyvault-secrets':
     specifier: ^4.7.0
     version: 4.7.0
+  '@nanostores/preact':
+    specifier: ^0.5.0
+    version: 0.5.0(nanostores@0.9.3)(preact@10.17.1)
   astro:
     specifier: ^3.0.12
     version: 3.0.12
@@ -56,6 +59,9 @@ dependencies:
   mongodb:
     specifier: ^6.1.0
     version: 6.1.0
+  nanostores:
+    specifier: ^0.9.3
+    version: 0.9.3
   preact:
     specifier: ^10.6.5
     version: 10.17.1
@@ -1136,6 +1142,17 @@ packages:
     resolution: {integrity: sha512-Xfijy7HvfzzqiOAhAepF4SGN5e9leLkMvg/OPOF97XemjfVCYN/oWa75wnkc6mltMSTwY+XlbhWgUOJmkFspSw==}
     dependencies:
       sparse-bitfield: 3.0.3
+    dev: false
+
+  /@nanostores/preact@0.5.0(nanostores@0.9.3)(preact@10.17.1):
+    resolution: {integrity: sha512-Zq5DEAY+kIfwJ1NPd43D1mpsbISuiD6N/SuTHrt/8jUoifLwXaReaZMAnvkvbIGOgcB1Hy++A9jZix2taNNYxQ==}
+    engines: {node: ^16.0.0 || ^18.0.0 || >=20.0.0}
+    peerDependencies:
+      nanostores: ^0.9.0
+      preact: '>=10.0.0'
+    dependencies:
+      nanostores: 0.9.3
+      preact: 10.17.1
     dev: false
 
   /@next/env@13.4.19:
@@ -3513,6 +3530,11 @@ packages:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanostores@0.9.3:
+    resolution: {integrity: sha512-KobZjcVyNndNrb5DAjfs0WG0lRcZu5Q1BOrfTOxokFLi25zFrWPjg+joXC6kuDqNfSt9fQwppyjUBkRPtsL+8w==}
+    engines: {node: ^16.0.0 || ^18.0.0 || >=20.0.0}
+    dev: false
 
   /napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}

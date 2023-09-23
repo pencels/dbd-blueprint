@@ -87,7 +87,7 @@ const session = await getSession(Astro.request);
       </button>
       {
         session ? (
-          <ProfileDropdown user={session.user} />
+          <ProfileDropdown user={session.user!} />
         ) : (
           <SignIn class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             Sign In
@@ -99,6 +99,8 @@ const session = await getSession(Astro.request);
 </nav>
 
 <script>
+  import { currentTheme } from "../themeStore.ts";
+
   var themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon")!;
   var themeToggleLightIcon = document.getElementById(
     "theme-toggle-light-icon",
@@ -127,9 +129,11 @@ const session = await getSession(Astro.request);
       if (localStorage.getItem("color-theme") === "light") {
         document.documentElement.classList.add("dark");
         localStorage.setItem("color-theme", "dark");
+        currentTheme.set("dark");
       } else {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("color-theme", "light");
+        currentTheme.set("light");
       }
 
       // if NOT set via local storage previously
@@ -137,9 +141,11 @@ const session = await getSession(Astro.request);
       if (document.documentElement.classList.contains("dark")) {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("color-theme", "light");
+        currentTheme.set("light");
       } else {
         document.documentElement.classList.add("dark");
         localStorage.setItem("color-theme", "dark");
+        currentTheme.set("dark");
       }
     }
   });
