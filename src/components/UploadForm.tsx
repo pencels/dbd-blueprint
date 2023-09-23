@@ -62,10 +62,8 @@ export default function UploadForm() {
         }
       }}
     >
-      <div class="mb-4">
-        <div class="mb-2">
-          <label for="name">Name</label>
-        </div>
+      <div class="mb-6">
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
         <input
           type="text"
           name="name"
@@ -79,13 +77,11 @@ export default function UploadForm() {
             }
             setName(name);
           }}
-          class="py-1 px-2 border-2 dark:bg-sky-900 dark:border-sky-100/50"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
       </div>
-      <div class="mb-4">
-        <div class="mb-2">
-          <label for="version">Version</label>
-        </div>
+      <div class="mb-6">
+        <label for="version" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Version</label>
         <input
           type="text"
           name="version"
@@ -98,37 +94,35 @@ export default function UploadForm() {
             setVersion(version);
             (e.target as any).value = version;
           }}
-          class="py-1 px-2 border-2 dark:bg-sky-900 dark:border-sky-100/50"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
       </div>
-      <div class="mb-4">
-        <div class="mb-2">
-          <label for="slug">Slug</label>
-        </div>
-        <div>
+      <div class="mb-6">
+        <label for="slug" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Slug</label>
+        <div class="flex items-center mb-4">
           <input
-            class="ml-2"
+            class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
             type="radio"
             name="use-custom"
             id="auto-gen"
             checked={!useCustomSlug}
             onInput={() => setUseCustomSlug((v) => !v)}
           />
-          <label for="auto-gen" class="ml-2">
+          <label for="auto-gen" class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
             Automatically generate from name
           </label>
         </div>
-        <div>
+        <div class="flex items-center mb-4">
           <input
-            class="ml-2"
+            class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
             type="radio"
             name="use-custom"
             id="use-custom"
             checked={useCustomSlug}
             onInput={() => setUseCustomSlug((v) => !v)}
           />
-          <label for="use-custom" class="ml-2 mr-1">
-            Custom:{" "}
+          <label for="use-custom" class="block mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+            Custom:
           </label>
           <input
             type="text"
@@ -138,7 +132,7 @@ export default function UploadForm() {
             disabled={!useCustomSlug}
             value={slug}
             onInput={(e) => setSlug(e.currentTarget.value)}
-            class="py-1 px-2 border-2 dark:bg-sky-900 dark:border-sky-100/50 disabled:text-sky-800/50 dark:disabled:text-sky-100/50 dark:disabled:bg-sky-100/10"
+            class="font-mono bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
           {slugAvailable === true ? (
             <span class="ml-2 text-green-500 dark:text-green-300">
@@ -151,41 +145,40 @@ export default function UploadForm() {
           )}
         </div>
       </div>
-      <div class="mb-4">
-        <div class="mb-2">
-          <label for="description">
-            Description{" "}
-            <span class="dark:text-sky-100/50">(optional, markdown)</span>
-          </label>
-        </div>
+      <div class="mb-6">
+        <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          Description
+          <span class="dark:text-sky-100/50 ml-2">(optional, markdown)</span>
+        </label>
         <textarea
           id="description"
-          class="w-full py-1 px-2 border-2 dark:bg-sky-900 dark:border-sky-100/50 font-mono"
+          class="font-mono block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           value={description}
           onInput={(e) => setDescription(e.currentTarget.value)}
         ></textarea>
       </div>
-      <div class="mb-4">
-        <div class="mb-2">
-          <label for="filepicker">ZIP package</label>
-        </div>
+      <div class="mb-6">
+        <label for="filepicker" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          ZIP package
+        </label>
         <input
           required
           type="file"
           accept=".zip"
           name="file"
           id="filepicker"
-          class="p-2 border-2 dark:bg-sky-900 dark:border-sky-100/50"
+          class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
           onInput={(e) => {
             setFile(e.currentTarget.files?.[0]);
           }}
         />
       </div>
       <div>
-        <button
-          id="submit"
-          class="mt-2 p-2 inline-flex gap-2 border-2 border-sky-800/10 hover:border-sky-800 dark:border-sky-100/50 dark:hover:border-sky-100"
-        >
+        <button id="submit" type="button" class="inline-flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <svg class="w-3.5 h-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path d="m14.707 4.793-4-4a1 1 0 0 0-1.416 0l-4 4a1 1 0 1 0 1.416 1.414L9 3.914V12.5a1 1 0 0 0 2 0V3.914l2.293 2.293a1 1 0 0 0 1.414-1.414Z"/>
+              <path d="M18 12h-5v.5a3 3 0 0 1-6 0V12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+          </svg>
           Upload
         </button>
       </div>

@@ -1,9 +1,13 @@
 ---
 import Base from "@layouts/Base.astro";
 import { SignIn } from "auth-astro/components";
+
+const callbackUrl = Astro.url.searchParams.get("redirect-uri");
 ---
 
 <Base title="log in">
   <p>lol</p>
-  <SignIn provider="discord">Sign in with Discord</SignIn>
+  <SignIn provider="discord" options={{ callbackUrl }}>
+    Sign in with Discord
+  </SignIn>
 </Base>

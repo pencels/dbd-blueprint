@@ -22,6 +22,7 @@
     "auth-astro": "^3.0.1",
     "axios": "^1.5.0",
     "cookie": "^0.5.0",
+    "flowbite": "^1.8.1",
     "lodash": "^4.17.21",
     "monaco-editor": "^0.43.0",
     "monaco-vim": "^0.4.0",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.198",
-    "@types/slug": "^5.0.4"
+    "@types/slug": "^5.0.4",
+    "flowbite-typography": "^1.0.3"
   }
 }

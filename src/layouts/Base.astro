@@ -1,5 +1,6 @@
 ---
 import Nav from "@components/Nav.astro";
+import Sidebar from "@components/Sidebar.astro";
 
 interface Props {
   title: string;
@@ -14,18 +15,35 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>dbd blueprint: {title}</title>
+    <title>{title}</title>
+    <script is:inline>
+      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=Rubik:wght@400;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=Rubik:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
   </head>
-  <body class="bg-white dark:bg-sky-900 text-sky-800 dark:text-white">
+  <body class="bg-white dark:bg-slate-900 text-sky-800 dark:text-white">
     <Nav />
+    <Sidebar />
     <div class="container mx-auto p-3 pt-4">
       <slot />
     </div>
+    <script
+      is:inline
+      src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"
+    ></script>
   </body>
 </html>

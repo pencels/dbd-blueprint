@@ -1,9 +1,18 @@
 ---
 import UploadForm from "@components/UploadForm";
 import Base from "@layouts/Base.astro";
+
+import { getSession } from "auth-astro/server";
+const session = await getSession(Astro.request);
+if (!session) {
+  return Astro.redirect(
+    "/login?redirect-uri=" + encodeURIComponent(Astro.request.url),
+  );
+}
+console.log(session);
 ---
 
 <Base title="Upload">
-  <h1 class="text-3xl mb-2">Upload a new asset pack</h1>
+  <h1 class="text-3xl mb-6 font-bold">Upload a new asset pack</h1>
   <UploadForm client:load />
 </Base>

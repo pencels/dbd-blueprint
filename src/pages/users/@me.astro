@@ -2,7 +2,6 @@
 import Base from "@layouts/Base.astro";
 
 import { getSession } from "auth-astro/server";
-import SignOut from "auth-astro/src/components/SignOut.astro";
 const session = await getSession(Astro.request);
 
 if (!session) {
@@ -10,10 +9,7 @@ if (!session) {
 }
 ---
 
-<Base title="@me">
-  <h1>{session.user?.name}</h1>
+<Base title={session?.user?.name!}>
+  <h1 class="text-3xl mb-3 font-bold">{session.user?.name}</h1>
   <img src={session.user?.image} />
-  <div>
-    <SignOut>Log Out</SignOut>
-  </div>
 </Base>

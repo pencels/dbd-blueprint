@@ -11,5 +11,14 @@ export default {
         .value!,
     }),
   ],
+  callbacks: {
+    session({ session, user }) {
+      session.user = user;
+      return session;
+    },
+    redirect({ url }) {
+      return url;
+    },
+  },
   adapter: MongoDBAdapter(clientPromise, { databaseName: "userdata" }),
 } as AuthConfig;

@@ -1,0 +1,36 @@
+---
+import Base from "@layouts/Base.astro";
+
+const { id } = Astro.params;
+---
+
+<Base title="Confirm Delete">
+  <h1 class="text-3xl mb-2 font-bold">
+    Deleting <span class="font-mono">{id}</span>
+  </h1>
+  <h2 class="text-2xl mb-2 font-medium">Are you sure?</h2>
+  <p>
+    Deleting this asset pack will make it unavailable to all the blueprints that
+    reference it.
+  </p>
+  <p>
+    Please type in the slug of the asset pack to confirm you want to delete it.
+  </p>
+  <div class="mt-4">
+    <p class="font-mono">{id}</p>
+    <form>
+      <div class="mb-4">
+        <input
+          type="text"
+          class="font-mono bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+      <div>
+        <button
+          class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+          >Confirm</button
+        >
+      </div>
+    </form>
+  </div>
+</Base>
