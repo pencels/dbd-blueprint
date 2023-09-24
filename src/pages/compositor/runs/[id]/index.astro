@@ -1,0 +1,14 @@
+---
+import Base from "@layouts/Base.astro";
+
+const { id } = Astro.params;
+
+const run = await fetch(`http://localhost:8080/v1/runs/${id}`).then((res) =>
+    res.json(),
+);
+---
+
+<Base title={`Run ${id}`}>
+    <h1 class="text-3xl font-bold">Run {id}</h1>
+    <p>{JSON.stringify(run)}</p>
+</Base>

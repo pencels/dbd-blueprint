@@ -4,8 +4,13 @@ import type { VimMode } from "monaco-vim";
 import type monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { useStore } from "@nanostores/preact";
 import { currentTheme } from "src/themeStore";
+import { code } from 'src/stores/codeStore';
 
-export default function Editor({ initValue = "" }) {
+export type Props = {
+  initValue?: string,
+};
+
+export default function Editor({ initValue = "" }: Props) {
   const monacoEditorElem = useRef<HTMLDivElement>(null);
   const vimStatusBar = useRef<HTMLDivElement>(null);
 
@@ -22,7 +27,7 @@ export default function Editor({ initValue = "" }) {
       if (monacoEditorElem.current) {
         setEditor((editor) => {
           if (editor) return editor;
-          return monaco.editor.create(monacoEditorElem.current!, {
+          editor = monaco.editor.create(monacoEditorElem.current!, {
             value: initValue,
             language: "json",
             theme: $currentTheme === 'dark' ? "vs-dark" : "vs-light",
@@ -33,12 +38,17 @@ export default function Editor({ initValue = "" }) {
             fontFamily: "IBM Plex Mono",
             contextmenu: false,
           });
+          editor.onDidChangeModelContent(e => {
+            code.set(editor!.getValue());
+          });
+          return editor;
         });
       }
     })
 
     return () => {
       editor?.dispose();
+      vimMode?.dispose();
     };
   }, [monacoEditorElem.current]);
 
@@ -61,39 +71,28 @@ export default function Editor({ initValue = "" }) {
       });
   }, [$currentTheme]);
 
-  useEffect(() => {
-    import('monaco-vim').then(vim => {
-      if (editor && vimStatusBar.current) {
-        setVimMode((vimMode) => {
-          if (vimMode) return vimMode;
-          return vim.initVimMode(editor, vimStatusBar.current!);
-        });
-      }
-    });
-    return () => {
-      vimMode?.dispose();
-    };
-  }, [editor, vimStatusBar.current]);
-
   return (
-    <div>
-      <label htmlFor="vim-mode" className="mr-1">
-        VIM
-      </label>
-      <input
-        name="vim-mode"
-        type="checkbox"
-        checked={vimMode !== undefined}
-        onInput={async () => {
-          if (vimMode) {
-            vimMode.dispose();
-            setVimMode(undefined);
-          } else {
-            const vim = await import('monaco-vim');
-            setVimMode(vim.initVimMode(editor!, vimStatusBar.current!));
-          }
-        }}
-      />
+    <div class="flex flex-col w-full min-h-full">
+      <div class="mb-2">
+        <label for="vim-mode" className="mr-1">
+          VIM Keybinds
+        </label>
+        <input
+          id="vim-mode"
+          name="vim-mode"
+          type="checkbox"
+          checked={vimMode !== undefined}
+          onInput={async () => {
+            if (vimMode) {
+              vimMode.dispose();
+              setVimMode(undefined);
+            } else {
+              const vim = await import('monaco-vim');
+              setVimMode(vim.initVimMode(editor!, vimStatusBar.current!));
+            }
+          }}
+        />
+      </div>
       {!editor && (
         <div role="status" class="w-full min-h-[600px] flex items-center justify-center">
             <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,8 +102,10 @@ export default function Editor({ initValue = "" }) {
             <span class="sr-only">Loading...</span>
         </div>
       )}
-      <div ref={monacoEditorElem} class="min-h-[600px]"></div>
-      <div ref={vimStatusBar} class="font-mono"></div>
+      <div ref={monacoEditorElem} class="grow"></div>
+      <div class="block font-mono h-4">
+        <div ref={vimStatusBar}></div>
+      </div>
     </div>
   );
 }

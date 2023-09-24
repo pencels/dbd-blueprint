@@ -1,0 +1,64 @@
+---
+import Base from "@layouts/Base.astro";
+
+const runs: any[] = await fetch("http://localhost:8080/v1/runs", {
+    headers: {
+        Cookie: Astro.request.headers.get("Cookie")!,
+    },
+}).then((res) => res.json());
+
+runs.forEach((run) => {
+    run.created = new Date(run.created);
+});
+
+runs.sort((b, a) => a.created - b.created);
+---
+
+<Base title="Compositor">
+    <h1 class="text-3xl mb-2 font-bold">Compositor</h1>
+    <div class="mb-6">
+        <p>
+            The compositor evaluates blueprints and turns them into actual
+            assets.
+        </p>
+    </div>
+    <div class="mb-2">
+        <a
+            href="/compositor/runs/new"
+            class="inline-flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+            <svg
+                class="w-3.5 h-3.5 mr-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 18 18"
+            >
+                <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 1v16M1 9h16"></path>
+            </svg>
+             New Run
+        </a>
+    </div>
+    <div class="flex flex-col gap-2">
+        {
+            runs.map((run: any) => (
+                <a
+                    href={`/compositor/runs/${run.id}`}
+                    class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+                >
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        {run.id}
+                    </h5>
+                    <p class="font-normal text-gray-700 dark:text-gray-400">
+                        {run.status}
+                    </p>
+                </a>
+            ))
+        }
+    </div>
+</Base>
