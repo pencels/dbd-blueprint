@@ -41,7 +41,11 @@ folders = { [pack.slug]: folders };
       <div class="mb-6" set:html={micromark(pack.description)} />
       <div>
         <h3 class="text-2xl mb-3 font-semibold">Manifest</h3>
-        <Files dirs={folders} />
+        <div
+          class="font-mono mr-6 max-h-[500px] max-w-screen-sm overflow-auto p-6 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700"
+        >
+          <Files dirs={folders} />
+        </div>
       </div>
     </div>
     <div>

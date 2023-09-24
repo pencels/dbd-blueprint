@@ -13,13 +13,14 @@ const keys = Object.keys(dirs);
 
 {
     keys.length > 0 && (
-        <ul class:list={[className, "[li_&]:ml-5"]}>
+        <ul class:list={[className, "[li_&]:ml-4"]}>
             {Object.keys(dirs).map((key) => {
                 const subdir = dirs[key];
+                const numKeys = Object.keys(subdir).length;
                 return (
                     <li>
                         <span class="dir inline-flex items-center gap-2">
-                            {Object.keys(subdir).length > 0 && (
+                            {numKeys > 0 ? (
                                 <>
                                     <svg
                                         class="w-3.5 h-3.5 text-gray-800 dark:text-white block [[data-disclosure-show]_>_span_>_&]:hidden"
@@ -52,6 +53,8 @@ const keys = Object.keys(dirs);
                                         />
                                     </svg>
                                 </>
+                            ) : (
+                                <div class="block w-3.5 h-3.5" />
                             )}
                             {key}
                         </span>
