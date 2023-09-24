@@ -15,28 +15,27 @@ export default function Editor({ initValue = "" }) {
     monaco.editor.IStandaloneCodeEditor | undefined
   >(undefined);
 
+  const monacoPromise = import('@lib/userWorker').then(() => import("monaco-editor/esm/vs/editor/editor.api"));
+
   useEffect(() => {
-    import("@lib/userWorker").then(() => {
-      import("monaco-editor/esm/vs/editor/editor.api")
-        .then(monaco => {
-          if (monacoEditorElem.current) {
-            setEditor((editor) => {
-              if (editor) return editor;
-              return monaco.editor.create(monacoEditorElem.current!, {
-                value: initValue,
-                language: "json",
-                theme: $currentTheme === 'dark' ? "vs-dark" : "vs-light",
-                minimap: {
-                  enabled: false,
-                },
-                automaticLayout: true,
-                fontFamily: "IBM Plex Mono",
-                contextmenu: false,
-              });
-            });
-          }
+    monacoPromise.then(monaco => {
+      if (monacoEditorElem.current) {
+        setEditor((editor) => {
+          if (editor) return editor;
+          return monaco.editor.create(monacoEditorElem.current!, {
+            value: initValue,
+            language: "json",
+            theme: $currentTheme === 'dark' ? "vs-dark" : "vs-light",
+            minimap: {
+              enabled: false,
+            },
+            automaticLayout: true,
+            fontFamily: "IBM Plex Mono",
+            contextmenu: false,
+          });
         });
-    });
+      }
+    })
 
     return () => {
       editor?.dispose();
@@ -44,17 +43,19 @@ export default function Editor({ initValue = "" }) {
   }, [monacoEditorElem.current]);
 
   useEffect(() => {
-    import("monaco-editor/esm/vs/editor/editor.api")
-      .then(monaco => {
-        // Remeasure custom sized fonts that load in with through <link>s
-        document.fonts.ready.then(() => {
-          monaco.editor.remeasureFonts();
-        });
-      });
-  }, []);
+    if (editor) {
+      // Remeasure custom sized fonts that load in with through <link>s
+      document.fonts.ready.then(() => 
+        monacoPromise
+          .then(monaco => {
+            monaco.editor.remeasureFonts();
+          })
+      );
+    }
+  }, [editor]);
 
   useEffect(() => {
-    import("monaco-editor/esm/vs/editor/editor.api")
+    monacoPromise
       .then(monaco => {
         monaco.editor.setTheme($currentTheme === 'dark' ? 'vs-dark' : 'vs-light');
       });
