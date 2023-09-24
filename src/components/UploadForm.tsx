@@ -13,6 +13,8 @@ export default function UploadForm() {
   );
   const [file, setFile] = useState<File | undefined>(undefined);
 
+  const [uploadProgress, setUploadProgress] = useState<number | undefined>(undefined);
+
   const checkSlugAvailable = useCallback(
     debounce((slug: string) => {
       if (slug) {
@@ -52,13 +54,27 @@ export default function UploadForm() {
         data.set("tags", "");
         data.set("file", file!);
 
-        const response = await fetch(`http://localhost:8080/v1/packs/${slug}`, {
-          method: "post",
-          body: data,
+        const xhr = new XMLHttpRequest();
+        await new Promise((resolve, reject) => {
+          xhr.withCredentials = true;
+          xhr.upload.addEventListener('progress', event => {
+            setUploadProgress(event.loaded * 100 / event.total);
+          });
+          xhr.addEventListener('loadend', () => {
+            setUploadProgress(100);
+            resolve(undefined);
+          })
+          xhr.addEventListener('error', e => {
+            reject(e);
+          })
+
+          xhr.open("POST", `http://localhost:8080/v1/packs/${slug}`, true);
+          xhr.send(data);
         });
-        if (response.ok) {
+
+        if (xhr.status === 202) {
           console.log("upload accepted, processing beginning");
-          window.location.assign(`/packs/${slug}`);
+          window.location.assign(`/assets/${slug}`);
         }
       }}
     >
@@ -182,6 +198,13 @@ export default function UploadForm() {
           Upload
         </button>
       </div>
+      {
+        uploadProgress !== undefined && (
+          <div class="mt-3 w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div class="transition-all bg-blue-600 h-2.5 rounded-full" style={{ width: uploadProgress + '%' }}></div>
+          </div>
+        )
+      }
     </form>
   );
 }

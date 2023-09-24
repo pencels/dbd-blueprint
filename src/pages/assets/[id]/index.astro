@@ -1,7 +1,10 @@
 ---
 import CopyToClipboard from "@components/CopyToClipboard";
+import type { Dirs } from "@components/Files.astro";
+import Files from "@components/Files.astro";
 import Base from "@layouts/Base.astro";
 import { getSession } from "auth-astro/server";
+import { micromark } from "micromark";
 
 console.log(Astro.cookies.get("next-auth.session-token"));
 const session = await getSession(Astro.request);
@@ -12,6 +15,20 @@ const pack = await fetch(`http://localhost:8080/v1/packs/${id}`, {
   credentials: "include",
 }).then((res) => res.json());
 const assets = [] as any[];
+
+const manifest: string[] = await fetch(
+  `http://localhost:8080/v1/packs/${id}/manifest`,
+).then((res) => res.json());
+
+let folders: Dirs = {};
+for (const path of manifest) {
+  let curr = folders;
+  for (const segment of path.split("/")) {
+    curr = curr[segment] || (curr[segment] = {});
+  }
+}
+
+folders = { [pack.slug]: folders };
 ---
 
 <Base title={pack.name}>
@@ -21,7 +38,11 @@ const assets = [] as any[];
   </h2>
   <div class="mt-2 flex flex-col sm:flex-row">
     <div class="grow mb-4">
-      <p>{pack.description}</p>
+      <div class="mb-6" set:html={micromark(pack.description)} />
+      <div>
+        <h3 class="text-2xl mb-3 font-semibold">Manifest</h3>
+        <Files dirs={folders} />
+      </div>
     </div>
     <div>
       <h3 class="text-2xl mb-1 font-bold">Slug</h3>
@@ -55,20 +76,5 @@ const assets = [] as any[];
         }
       </div>
     </div>
-  </div>
-  <div
-    class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2"
-  >
-    {
-      assets.slice(20, 40).map((asset: any) => (
-        <div class="border">
-          <img
-            class="object-top object-cover w-full h-[200px] max-h-[200px] border-b dark:bg-sky-950"
-            src={`https://blueprintstore.blob.core.windows.net/assets/${asset.id}`}
-          />
-          <p class="break-words p-2">{asset.file_name}</p>
-        </div>
-      ))
-    }
   </div>
 </Base>

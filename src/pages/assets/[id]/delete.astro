@@ -18,15 +18,18 @@ const { id } = Astro.params;
   </p>
   <div class="mt-4">
     <p class="font-mono">{id}</p>
-    <form>
+    <form id="delete-form">
       <div class="mb-4">
         <input
           type="text"
+          required
+          pattern={id}
           class="font-mono bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
       </div>
       <div>
         <button
+          type="submit"
           class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
           >Confirm</button
         >
@@ -34,3 +37,20 @@ const { id } = Astro.params;
     </form>
   </div>
 </Base>
+
+<script define:vars={{ id }}>
+const form = document.getElementById("delete-form");
+form?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const response = await fetch(`http://localhost:8080/v1/packs/${id}`, {
+    method: "delete",
+    mode: "cors",
+    credentials: "include",
+  });
+
+  if (response.ok) {
+    window.location.assign("/assets");
+  }
+});
+</script>
