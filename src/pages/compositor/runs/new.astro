@@ -2,24 +2,22 @@
 import Editor from "@components/Editor";
 import Base from "@layouts/Base.astro";
 
-const initText = `{
-    "templates": [
-        {
-            "canvas_size": [256, 256],
-            "aliases": {
-                "$fg": ["default-icons:Perks/**"]
+const initText = `[
+    {
+        "canvas_size": [256, 256],
+        "aliases": {
+            "$fg": ["default-icons:Perks/**"]
+        },
+        "layers": [
+            {
+                "use": "black-backgrounds:perk_template.png"
             },
-            "layers": [
-                {
-                    "use": "black-backgrounds:perk_template.png"
-                },
-                {
-                    "use": "$fg"
-                }
-            ]
-        }
-    ]
-}`;
+            {
+                "use": "$fg"
+            }
+        ]
+    }
+]`;
 ---
 
 <Base title="New Run">
@@ -61,6 +59,10 @@ const initText = `{
     const values = document.getElementById("values");
     code.set(values?.dataset.initText || "");
 
+    const blueprintRequest = {
+        templates: code.get(),
+    };
+
     const runButton = document.getElementById("run");
     runButton?.addEventListener("click", async () => {
         const response = await fetch("http://localhost:8080/v1/compositor", {
@@ -68,7 +70,7 @@ const initText = `{
             headers: {
                 "Content-Type": "application/json",
             },
-            body: code.get(),
+            body: JSON.stringify(blueprintRequest),
             mode: "cors",
             credentials: "include",
         });

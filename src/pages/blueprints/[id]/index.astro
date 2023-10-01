@@ -1,0 +1,19 @@
+---
+import Editor from "@components/Editor";
+import Base from "@layouts/Base.astro";
+
+const { id } = Astro.params;
+
+const blueprint = await fetch(`http://localhost:8080/v1/blueprints/${id}`, {
+    headers: {
+        Cookie: Astro.request.headers.get("Cookie")!,
+    },
+}).then((res) => res.json());
+---
+
+<Base title="Blueprints">
+    <h1 class="text-3xl mb-2 font-bold">{blueprint.name}</h1>
+    <div class="flex min-h-[500px]">
+        <Editor initValue={blueprint.templates} client:only="preact" />
+    </div>
+</Base>
